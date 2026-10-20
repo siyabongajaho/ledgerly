@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0e5c63"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<title>Ledgerly – Accounting for small businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f1f5f4;--surface:#fff;--ink:#10231f;--muted:#5d706b;--line:#dbe4e1;--brand:#0e5c63;--brand-ink:#fff;--soft:#dcefee;--amber:#f2b01e;--amber-ink:#3a2a00;--bad:#b3341f;--good:#17795a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1716;--surface:#142321;--ink:#e8f1ef;--muted:#93a9a4;--line:#243836;--brand:#4cc3c9;--brand-ink:#06201f;--soft:#173532;--amber:#f2b01e;--bad:#ff8a73;--good:#5fd3a8}}
+:root[data-theme="dark"]{--bg:#0d1716;--surface:#142321;--ink:#e8f1ef;--muted:#93a9a4;--line:#243836;--brand:#4cc3c9;--brand-ink:#06201f;--soft:#173532;--amber:#f2b01e;--bad:#ff8a73;--good:#5fd3a8}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif;line-height:1.1;margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.btn{background:var(--brand);color:var(--brand-ink);border:0;border-radius:8px;padding:10px 18px;font-weight:600}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.sm{padding:6px 12px;font-size:14px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav.top{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font:700 22px 'Bricolage Grotesque',sans-serif}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:48px 0 56px}
+.hero h1{font-size:clamp(36px,6vw,62px);letter-spacing:-.02em}
+.hero p{color:var(--muted);font-size:18px;max-width:46ch;margin:18px 0 26px}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;transform:rotate(1.6deg);box-shadow:0 18px 40px -22px rgba(0,0,0,.35)}
+.sheet .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line)}
+.sheet .tot{font:700 28px 'Bricolage Grotesque',sans-serif;margin-top:14px;display:flex;justify-content:space-between}
+.stamp{display:inline-block;border:2px solid var(--good);color:var(--good);border-radius:6px;padding:2px 10px;font-weight:700;transform:rotate(-4deg)}
+.toggle{display:inline-flex;border:1.5px solid var(--line);border-radius:99px;padding:3px;margin:14px 0 22px;background:var(--surface)}
+.toggle button{border:0;background:none;padding:6px 16px;border-radius:99px}
+.toggle button.on{background:var(--brand);color:var(--brand-ink)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.plan{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.plan.pop{border-color:var(--brand);border-width:2.5px}
+.plan .price{font:700 38px 'Bricolage Grotesque',sans-serif}
+.plan .price small{font:400 14px Figtree;color:var(--muted)}
+.plan ul{list-style:none;padding:0;margin:0 0 6px;display:grid;gap:6px;color:var(--muted);font-size:15px;flex:1}
+.plan li::before{content:"✓ ";color:var(--good);font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(5,15,13,.6);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.modal .card{width:min(440px,100%);display:grid;gap:12px}
+label{display:grid;gap:4px;font-size:14px;color:var(--muted)}
+input,select{background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:9px 12px;width:100%}
+.app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+aside{background:var(--surface);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+aside .logo{padding:0 10px 16px}
+aside button.nav{text-align:left;background:none;border:0;padding:9px 12px;border-radius:8px;color:var(--muted);font-weight:500}
+aside button.nav.on{background:var(--soft);color:var(--ink)}
+main{padding:24px;min-width:0}
+.banner{background:var(--amber);color:var(--amber-ink);border-radius:10px;padding:10px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px;font-weight:500}
+.banner button{background:var(--amber-ink);color:#fff;border:0;border-radius:7px;padding:6px 14px;font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:18px 0}
+.kpi b{display:block;font:700 28px 'Bricolage Grotesque',sans-serif}
+.kpi span{color:var(--muted);font-size:14px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:500;font-size:14px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.pill{padding:2px 10px;border-radius:99px;font-size:13px;font-weight:600;background:var(--soft)}
+.pill.u{background:var(--amber);color:var(--amber-ink)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.lock{position:fixed;inset:0;background:var(--bg);z-index:40;overflow:auto;padding:30px 20px}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:8px;z-index:99}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.sheet{transform:none}.app{grid-template-columns:1fr}aside{position:fixed;top:auto;left:0;right:0;bottom:0;height:auto;z-index:30;flex-direction:row;gap:0;border-right:0;border-top:1px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px))}aside .logo,aside small,aside div{display:none}aside button.nav{flex:1;min-width:0;padding:10px 2px;font-size:12px;text-align:center}main{padding:16px 16px 96px}.toast{bottom:calc(76px + env(safe-area-inset-bottom,0px))}.btn{min-height:42px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var PLANS={start:{n:'Start',p:240,f:['Up to 10 invoices','15% VAT on invoices','Bank import and matching','Payroll for 3 employees','1 user']},standard:{n:'Standard',p:435,f:['Unlimited invoices','VAT summary for SARS','Bank import and matching','Payroll: PAYE, UIF and SDL','2 users'],pop:1}};
+var DAY=864e5,TRIAL=7,KEY='ledgerly:v1',cur='R';
+var S=load(),ui={view:'dash',billing:'monthly',modal:null,pick:'standard',live:false};
+if(S.user&&!S.employees){S.employees=[{id:1,name:'Thandi Mokoena',gross:18500},{id:2,name:'Pieter van Wyk',gross:32000}];S.bank=[];S.runs=[]}
+function load(){try{var r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return{user:null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function money(n){return cur+Number(n).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function price(k){var p=PLANS[k].p;return ui.billing==='yearly'?Math.round(p*.8):p}
+function daysLeft(){return Math.max(0,TRIAL-Math.floor((Date.now()-S.sub.start)/DAY))}
+function locked(){var s=S.sub;return s.status==='canceled'||(s.status==='trial'&&daysLeft()<=0)}
+function ago(d){return new Date(Date.now()-d*DAY).toISOString().slice(0,10)}
+function seed(){S.invoices=[];S.expenses=[];S.employees=[{id:1,name:'Thandi Mokoena',gross:18500},{id:2,name:'Pieter van Wyk',gross:32000}];S.bank=[];S.runs=[];var c=['Karoo Logistics','Bloem Bakery','Sunrise Dental','Northgate Print'];
+for(var i=0;i<12;i++){S.invoices.push({id:1001+i,cust:c[i%4],desc:'Monthly services',amt:900+i*137,vat:Math.round((900+i*137)*15)/100,date:ago(i*14+3),paid:i>1});}
+for(var j=0;j<10;j++){S.expenses.push({id:j,name:['Rent','Software','Fuel','Supplies','Insurance'][j%5],amt:600+j*70,vat:Math.round((600+j*70)*1500/115)/100,date:ago(j*16+5)});}}
+function toast(m){var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove()},2400)}
+function planCards(mode){return '<div class="plans">'+Object.keys(PLANS).map(function(k){var p=PLANS[k];return '<div class="plan'+(p.pop?' pop':'')+'"><h3>'+p.n+'</h3><div class="price">'+cur+price(k)+' <small>/ month incl. VAT'+(ui.billing==='yearly'?', billed yearly':'')+'</small></div><ul>'+p.f.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><button class="btn'+(p.pop?'':' alt')+'" data-a="'+(mode==='buy'?'checkout':'signup')+'" data-k="'+k+'">'+(mode==='buy'?'Subscribe to '+p.n:'Start 7-day free trial')+'</button></div>'}).join('')+'</div>'}
+function toggle(){return '<div class="toggle" role="group" aria-label="Billing period"><button data-a="bill" data-k="monthly" class="'+(ui.billing==='monthly'?'on':'')+'">Monthly</button><button data-a="bill" data-k="yearly" class="'+(ui.billing==='yearly'?'on':'')+'">Yearly (save 20%)</button></div>'}
+function landing(){return '<div class="wrap"><nav class="top"><span class="logo">Ledgerly</span><button class="btn alt sm" data-a="signup" data-k="standard">Start free trial</button></nav><section class="hero"><div><h1>Accounting that keeps you VAT-ready.</h1><p>Send invoices with 15% VAT, track expenses and see what you owe SARS in one place. Try every feature free for 7 days. No card needed.</p><button class="btn" data-a="signup" data-k="standard">Start 7-day free trial</button></div><div class="sheet"><div class="row"><span>Invoice #1042</span><span class="stamp">PAID</span></div><div class="row"><span>Website maintenance</span><span>'+money(1200)+'</span></div><div class="row"><span>Hosting (annual)</span><span>'+money(480)+'</span></div><div class="row"><span>VAT 15%</span><span>'+money(252)+'</span></div><div class="tot"><span>Total</span><span>'+money(1932)+'</span></div></div></section><section id="pricing" style="padding-bottom:60px"><h2 style="font-size:34px">Pick a plan after your trial</h2>'+toggle()+planCards('trial')+'</section></div>'}
+function sums(){var inc=0,out=0,exp=0,vo=0,vi=0;S.invoices.forEach(function(i){vo+=i.vat||0;if(i.paid)inc+=i.amt;else out+=i.amt+(i.vat||0)});S.expenses.forEach(function(e){exp+=e.amt-(e.vat||0);vi+=e.vat||0});return{inc:inc,out:out,exp:exp,net:inc-exp,vat:vo-vi}}
+function chart(){var m=[],now=new Date();for(var i=5;i>=0;i--){var d=new Date(now.getFullYear(),now.getMonth()-i,1);m.push({k:d.toISOString().slice(0,7),l:d.toLocaleString('en',{month:'short'}),i:0,e:0})}
+S.invoices.forEach(function(x){if(!x.paid)return;m.forEach(function(b){if(x.date.slice(0,7)===b.k)b.i+=x.amt})});S.expenses.forEach(function(x){m.forEach(function(b){if(x.date.slice(0,7)===b.k)b.e+=x.amt-(x.vat||0)})});
+var mx=Math.max.apply(null,m.map(function(b){return Math.max(b.i,b.e)}).concat([1])),h=150,o='';
+m.forEach(function(b,i){var x=20+i*88,hi=b.i/mx*h,he=b.e/mx*h;o+='<rect x="'+x+'" y="'+(h-hi+10)+'" width="26" height="'+hi+'" rx="3" fill="var(--brand)"/><rect x="'+(x+30)+'" y="'+(h-he+10)+'" width="26" height="'+he+'" rx="3" fill="var(--amber)"/><text x="'+(x+28)+'" y="182" text-anchor="middle" font-size="12" fill="var(--muted)">'+b.l+'</text>'});
+return '<div class="scroll"><svg viewBox="0 0 560 190" style="width:100%;min-width:420px" role="img" aria-label="Income and expenses by month">'+o+'</svg></div><small style="color:var(--muted)">Teal: income received. Amber: expenses.</small>'}
+function dash(){var s=sums();return '<h2>Dashboard</h2><div class="kpis"><div class="card kpi"><b>'+money(s.inc)+'</b><span>Income received</span></div><div class="card kpi"><b>'+money(s.out)+'</b><span>Waiting to be paid</span></div><div class="card kpi"><b>'+money(s.exp)+'</b><span>Expenses (excl. VAT)</span></div><div class="card kpi"><b>'+money(s.vat)+'</b><span>VAT owed to SARS</span></div><div class="card kpi"><b style="color:'+(s.net<0?'var(--bad)':'var(--good)')+'">'+money(s.net)+'</b><span>Profit</span></div></div><div class="card"><h3 style="margin-bottom:10px">Last 6 months</h3>'+chart()+'</div>'}
+function invs(){return '<div class="head"><h2>Invoices</h2><button class="btn" data-a="new-inv">New invoice</button></div><div class="card scroll" style="margin-top:16px"><table><tr><th>No.</th><th>Customer</th><th>Date</th><th class="n">Total incl. VAT</th><th>Status</th><th></th></tr>'+S.invoices.slice().sort(function(a,b){return b.id-a.id}).map(function(i){return '<tr><td>#'+i.id+'</td><td>'+esc(i.cust)+'</td><td>'+i.date+'</td><td class="n">'+money(i.amt+(i.vat||0))+'</td><td><span class="pill'+(i.paid?'':' u')+'">'+(i.paid?'Paid':'Unpaid')+'</span></td><td>'+(i.paid?'':'<button class="btn alt sm" data-a="pay" data-k="'+i.id+'">Mark paid</button>')+'</td></tr>'}).join('')+'</table></div>'}
+function exps(){return '<div class="head"><h2>Expenses</h2><button class="btn" data-a="new-exp">Add expense</button></div><div class="card scroll" style="margin-top:16px"><table><tr><th>Date</th><th>What for</th><th class="n">Amount</th></tr>'+S.expenses.slice().sort(function(a,b){return a.date<b.date?1:-1}).map(function(e){return '<tr><td>'+e.date+'</td><td>'+esc(e.name)+'</td><td class="n">'+money(e.amt)+'</td></tr>'}).join('')+'</table></div>'}
+function bill(){var s=S.sub,t=s.status==='trial',h='<h2>Billing</h2><div class="card" style="margin:16px 0;display:grid;gap:8px">';
+if(t)h+='<h3>Free trial</h3><p style="margin:0">'+daysLeft()+' of '+TRIAL+' days left. You have full access until the trial ends.</p><div><button class="btn alt sm" data-a="skip">Demo: skip ahead 1 day</button></div>';
+else if(s.status==='active')h+='<h3>'+PLANS[s.plan].n+' plan</h3><p style="margin:0">'+money(s.amt)+' per '+(s.cycle==='yearly'?'month, billed yearly':'month')+'. Next payment: '+new Date(s.next).toDateString()+'.</p><div><button class="btn alt sm" data-a="cancel">Cancel subscription</button></div>';
+else h+='<h3>Subscription ended</h3><p style="margin:0">Choose a plan to get back in.</p>';
+return h+'</div>'+(s.status==='active'?'':'<h3>Choose a plan</h3>'+toggle()+planCards('buy'))+'<p style="margin-top:24px"><button class="btn alt sm" data-a="reset">Reset demo data</button></p>'}
+function appView(){var s=S.sub,v={dash:dash,inv:invs,exp:exps,bank:bankv,pay:payv,bill:bill}[ui.view](),b='';
+if(s.status==='trial')b='<div class="banner"><span>'+daysLeft()+' day'+(daysLeft()===1?'':'s')+' left in your free trial</span><button data-a="view" data-k="bill">Choose a plan</button></div>';
+var nav=[['dash','Dashboard'],['inv','Invoices'],['exp','Expenses'],['bank','Bank'],['pay','Payroll'],['bill','Billing']].map(function(n){return '<button class="nav'+(ui.view===n[0]?' on':'')+'" data-a="view" data-k="'+n[0]+'">'+n[1]+'</button>'}).join('');
+return '<div class="app"><aside><span class="logo">Ledgerly</span>'+nav+'<div style="flex:1"></div><small style="padding:8px 12px;color:var(--muted)">'+esc(S.user.company)+'</small></aside><main>'+b+v+'</main></div>'}
+function paywall(){return '<div class="lock"><div class="wrap"><span class="logo">Ledgerly</span><h1 style="font-size:40px;margin-top:24px">'+(S.sub.status==='canceled'?'Your subscription has ended':'Your free trial has ended')+'</h1><p style="color:var(--muted);max-width:52ch">Your invoices and expenses are saved. Pick a plan to keep working.</p>'+toggle()+planCards('buy')+'</div></div>'}
+function modal(){var m=ui.modal;if(!m)return '';var f=function(id,l,t,v,ph){return '<label>'+l+'<input id="'+id+'" type="'+(t||'text')+'" value="'+(v||'')+'" placeholder="'+(ph||'')+'"></label>'};
+var body='';
+if(m.t==='signup')body='<h3>Start your 7-day free trial</h3>'+f('f-name','Your name')+f('f-co','Company name')+f('f-email','Email','email')+'<button class="btn" data-a="do-signup">Start trial</button><small style="color:var(--muted)">No card needed. You choose a plan when the trial ends.</small>';
+if(m.t==='checkout')body='<h3>Subscribe to '+PLANS[m.k].n+'</h3><p style="margin:0">'+money(price(m.k))+' per month'+(ui.billing==='yearly'?', billed yearly ('+money(price(m.k)*12)+')':'')+'</p>'+f('c-name','Name on card')+f('c-num','Card number','text','','4242 4242 4242 4242')+f('c-exp','Expiry','text','','MM/YY')+'<button class="btn" data-a="do-pay" data-k="'+m.k+'">Pay '+money(ui.billing==='yearly'?price(m.k)*12:price(m.k))+'</button><small style="color:var(--muted)">Demo only. No real payment is taken.</small>';
+if(m.t==='inv')body='<h3>New invoice</h3>'+f('i-c','Customer')+f('i-d','Description')+f('i-a','Amount before VAT','number')+'<label>VAT<select id="i-v"><option value="1">Add 15% VAT</option><option value="0">No VAT</option></select></label><button class="btn" data-a="do-inv">Save invoice</button>';
+if(m.t==='exp')body='<h3>Add expense</h3>'+f('e-n','What for')+f('e-a','Amount paid','number')+'<label>VAT<select id="e-v"><option value="1">Includes 15% VAT</option><option value="0">No VAT</option></select></label><button class="btn" data-a="do-exp">Save expense</button>';
+if(m.t==='emp')body='<h3>Add employee</h3>'+f('m-n','Full name')+f('m-g','Gross monthly salary','number')+'<button class="btn" data-a="do-emp">Save employee</button>';
+if(m.t==='slip'){var em=S.employees.filter(function(x){return x.id==m.k})[0],c=calc(em.gross);body='<h3>Payslip: '+esc(em.name)+'</h3><table style="min-width:0"><tr><td>Gross salary</td><td class="n">'+money(c.gross)+'</td></tr><tr><td>PAYE</td><td class="n">-'+money(c.paye)+'</td></tr><tr><td>UIF (1%)</td><td class="n">-'+money(c.uif)+'</td></tr><tr><td><b>Net pay</b></td><td class="n"><b>'+money(c.net)+'</b></td></tr><tr><td>Employer UIF</td><td class="n">'+money(c.uif)+'</td></tr></table>'}
+return '<div class="modal" data-a="close"><div class="card" role="dialog" aria-modal="true">'+body+'<button class="btn alt sm" data-a="close">Cancel</button></div></div>'}
+var TAX=[[0,0,.18],[245100,44118,.26],[383100,79998,.31],[530200,125599,.36],[695800,185215,.39],[887000,259783,.41],[1878600,666339,.45]],REB=17820,UIFCAP=17712;
+function calc(g){var I=g*12,r=TAX[0];TAX.forEach(function(x){if(I>x[0])r=x});var p=Math.max(0,r[1]+(I-r[0])*r[2]-REB)/12,u=Math.min(g,UIFCAP)*.01;return{gross:g,paye:p,uif:u,net:g-p-u}}
+function pay(){var g=0,p=0,u=0,n=0;S.employees.forEach(function(e){var c=calc(e.gross);g+=e.gross;p+=c.paye;u+=c.uif;n+=c.net});var sd=g*12>5e5?g*.01:0;return{gross:g,paye:p,uif:u,net:n,sdl:sd,emp:p+u*2+sd,cost:g+u+sd}}
+function payv(){var P=pay(),rows=S.employees.map(function(e){var c=calc(e.gross);return '<tr><td>'+esc(e.name)+'</td><td class="n">'+money(c.gross)+'</td><td class="n">'+money(c.paye)+'</td><td class="n">'+money(c.uif)+'</td><td class="n">'+money(c.net)+'</td><td><button class="btn alt sm" data-a="slip" data-k="'+e.id+'">Payslip</button> <button class="btn alt sm" data-a="del-emp" data-k="'+e.id+'">Remove</button></td></tr>'}).join(''),runs=S.runs.slice().reverse().map(function(r){return '<tr><td>'+r.mo+'</td><td>'+r.n+'</td><td class="n">'+money(r.net)+'</td><td class="n">'+money(r.emp)+'</td></tr>'}).join('');
+return '<div class="head"><h2>Payroll</h2><div><button class="btn alt sm" data-a="new-emp">Add employee</button> <button class="btn sm" data-a="run-pay">Run this month’s payroll</button></div></div><div class="kpis"><div class="card kpi"><b>'+money(P.net)+'</b><span>Net pay to employees</span></div><div class="card kpi"><b>'+money(P.emp)+'</b><span>EMP201 due to SARS by the 7th</span></div><div class="card kpi"><b>'+money(P.cost)+'</b><span>Total cost to company</span></div></div><div class="card scroll"><table><tr><th>Employee</th><th class="n">Gross</th><th class="n">PAYE</th><th class="n">UIF</th><th class="n">Net pay</th><th></th></tr>'+(rows||'<tr><td colspan="6">No employees yet. Add your first employee to see PAYE and UIF.</td></tr>')+'</table></div><p style="color:var(--muted);font-size:14px">PAYE uses the 2026/27 SARS tables and the under-65 rebate. UIF is 1% from the employee and 1% from the employer on the first R17 712 a month. SDL of 1% applies when yearly payroll is above R500 000. Medical credits and other deductions are not included.</p>'+(runs?'<h3 style="margin:18px 0 8px">Payroll history</h3><div class="card scroll"><table><tr><th>Month</th><th>Staff</th><th class="n">Net paid</th><th class="n">EMP201</th></tr>'+runs+'</table></div>':'')}
+function matchInv(t){return t.amt>0?S.invoices.filter(function(i){return !i.paid&&Math.abs(i.amt+(i.vat||0)-t.amt)<.01})[0]:null}
+function bankv(){var o=S.bank.filter(function(t){return !t.done}).sort(function(a,b){return a.date<b.date?1:-1}),rows=o.map(function(t){var m=matchInv(t),a=t.amt>0?(m?'<button class="btn sm" data-a="b-match" data-k="'+t.id+'">Match invoice #'+m.id+'</button>':'<span class="pill">No invoice match</span>'):'<button class="btn sm" data-a="b-exp" data-k="'+t.id+'">Add as expense</button>';return '<tr><td>'+esc(t.date)+'</td><td>'+esc(t.desc)+'</td><td class="n" style="color:'+(t.amt<0?'var(--bad)':'var(--good)')+'">'+(t.amt<0?'-':'')+money(Math.abs(t.amt))+'</td><td>'+a+' <button class="btn alt sm" data-a="b-ign" data-k="'+t.id+'">Ignore</button></td></tr>'}).join('');
+return '<div class="head"><h2>Bank</h2><div><button class="btn alt sm" data-a="bank-demo">Load sample feed</button> <label class="btn sm" style="display:inline-block;color:var(--brand-ink);cursor:pointer">Import CSV<input type="file" id="csv" accept=".csv,text/csv" hidden></label></div></div><p style="color:var(--muted);font-size:14px">Import a bank statement as a CSV file with three columns: date, description, amount. Money out is negative. Live bank connections need a bank-data partner, so this version works from imported files.</p><div class="card scroll"><table><tr><th>Date</th><th>Description</th><th class="n">Amount</th><th>Action</th></tr>'+(rows||'<tr><td colspan="4">Nothing to match. Import a statement or load the sample feed.</td></tr>')+'</table></div>'}
+function api(p,d){return fetch(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d||{})}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function startPay(k){toast('Taking you to PayFast…');api('/api/checkout',{plan:k,cycle:ui.billing,name:S.user.name,company:S.user.company,email:S.user.email}).then(function(c){var f=document.createElement('form');f.method='POST';f.action=c.action;Object.keys(c.fields).forEach(function(n){var i=document.createElement('input');i.type='hidden';i.name=n;i.value=c.fields[n];f.appendChild(i)});document.body.appendChild(f);f.submit()}).catch(function(){toast('Could not start the payment. Please try again.')})}
+function render(){var h=!S.user?landing():(locked()?appView()+paywall():appView());document.getElementById('root').innerHTML=h+modal();var fi=document.querySelector('.modal input');if(fi)fi.focus()}
+function v(id){var e=document.getElementById(id);return e?e.value.trim():''}
+document.addEventListener('click',function(e){var el=e.target.closest('[data-a]');if(!el)return;var a=el.dataset.a,k=el.dataset.k;
+if(a==='close'&&e.target.closest('.card')&&!e.target.closest('button'))return;
+if(a==='bill'){ui.billing=k}
+else if(a==='signup'){ui.modal={t:'signup',k:k}}
+else if(a==='checkout'){if(ui.live){startPay(k);return}ui.modal={t:'checkout',k:k}}
+else if(a==='close'){ui.modal=null}
+else if(a==='view'){ui.view=k;window.scrollTo(0,0)}
+else if(a==='new-inv'){ui.modal={t:'inv'}}
+else if(a==='new-exp'){ui.modal={t:'exp'}}
+else if(a==='do-signup'){var n=v('f-name'),c=v('f-co'),m=v('f-email');if(!n||!c||m.indexOf('@')<1){toast('Enter your name, company and a valid email');return}
+S={user:{name:n,company:c,email:m},sub:{status:'trial',plan:null,start:Date.now()}};seed();save();if(ui.live)api('/api/signup',{name:n,company:c,email:m}).catch(function(){});ui.modal=null;ui.view='dash';toast('Trial started. You have 7 days.')}
+else if(a==='do-pay'){if(v('c-num').replace(/\s/g,'').length<12||!v('c-name')){toast('Enter the card name and a 12+ digit number');return}
+var yr=ui.billing==='yearly';S.sub={status:'active',plan:k,cycle:ui.billing,amt:price(k),next:Date.now()+(yr?365:30)*DAY,start:S.sub.start};save();ui.modal=null;ui.view='bill';toast('Subscribed to '+PLANS[k].n)}
+else if(a==='do-inv'){var am=parseFloat(v('i-a'));if(!v('i-c')||!(am>0)){toast('Enter a customer and an amount above 0');return}
+if(S.sub.status==='active'&&S.sub.plan==='start'&&S.invoices.length>=10){ui.modal=null;toast('Start plan allows 10 invoices. Upgrade to add more.');render();return}
+S.invoices.push({id:Math.max.apply(null,S.invoices.map(function(i){return i.id}).concat([1000]))+1,cust:v('i-c'),desc:v('i-d'),amt:am,vat:v('i-v')==='1'?Math.round(am*15)/100:0,date:ago(0),paid:false});save();ui.modal=null;toast('Invoice saved')}
+else if(a==='do-exp'){var ea=parseFloat(v('e-a'));if(!v('e-n')||!(ea>0)){toast('Enter what it was for and an amount above 0');return}S.expenses.push({id:Date.now(),name:v('e-n'),amt:ea,vat:v('e-v')==='1'?Math.round(ea*1500/115)/100:0,date:ago(0)});save();ui.modal=null;toast('Expense saved')}
+else if(a==='pay'){S.invoices.forEach(function(i){if(i.id==k)i.paid=true});save();toast('Invoice marked paid')}
+else if(a==='skip'){S.sub.start-=DAY;save()}
+else if(a==='cancel'){if(ui.live){api('/api/cancel',{name:S.user.name,company:S.user.company,email:S.user.email,plan:S.sub.plan}).catch(function(){});toast('Cancellation requested. We will confirm by email.')}S.sub.status='canceled';save()}
+else if(a==='reset'){try{localStorage.removeItem(KEY)}catch(x){}S={user:null};ui.modal=null}
+else if(a==='new-emp'){ui.modal={t:'emp'}}
+else if(a==='do-emp'){var en=v('m-n'),eg=parseFloat(v('m-g'));if(!en||!(eg>0)){toast('Enter a name and a monthly salary above 0');return}
+if(S.sub.status==='active'&&S.sub.plan==='start'&&S.employees.length>=3){ui.modal=null;toast('Start plan allows 3 employees. Upgrade to add more.');render();return}
+S.employees.push({id:Date.now(),name:en,gross:eg});save();ui.modal=null;toast('Employee added')}
+else if(a==='slip'){ui.modal={t:'slip',k:k}}
+else if(a==='del-emp'){S.employees=S.employees.filter(function(x){return x.id!=k});save()}
+else if(a==='run-pay'){var mo=new Date().toISOString().slice(0,7);if(!S.employees.length){toast('Add an employee first');return}if(S.runs.some(function(r){return r.mo===mo})){toast('Payroll for this month is already done');return}var P=pay();S.runs.push({mo:mo,n:S.employees.length,net:P.net,emp:P.emp,cost:P.cost});S.expenses.push({id:Date.now(),name:'Salaries '+mo,amt:P.cost,vat:0,date:ago(0)});save();toast('Payroll done. Salaries added to expenses.')}
+else if(a==='bank-demo'){var dd=0;S.invoices.forEach(function(i){if(!i.paid)S.bank.push({id:Date.now()+i.id,date:ago(1+dd++),desc:'EFT '+i.cust,amt:i.amt+(i.vat||0),done:false})});[['Engen fuel',-642.5],['Vodacom',-799],['Eskom prepaid',-1500],['Takealot',-1249.99]].forEach(function(x,j){S.bank.push({id:Date.now()+500+j,date:ago(2+j),desc:x[0],amt:x[1],done:false})});save();toast('Sample transactions loaded')}
+else if(a==='b-match'){var bt=S.bank.filter(function(x){return x.id==k})[0],iv=bt&&matchInv(bt);if(iv){iv.paid=true;bt.done=true;save();toast('Invoice #'+iv.id+' marked paid')}}
+else if(a==='b-exp'){var bx=S.bank.filter(function(x){return x.id==k})[0];if(bx){var ab=Math.abs(bx.amt);S.expenses.push({id:Date.now(),name:bx.desc,amt:ab,vat:Math.round(ab*1500/115)/100,date:/^\d{4}-\d\d-\d\d$/.test(bx.date)?bx.date:ago(0)});bx.done=true;save();toast('Added to expenses')}}
+else if(a==='b-ign'){S.bank.forEach(function(x){if(x.id==k)x.done=true});save()}
+render()});
+document.addEventListener('change',function(e){if(e.target.id!=='csv'||!e.target.files[0])return;var r=new FileReader();r.onload=function(){var n=0;String(r.result).split('\n').forEach(function(l){var p=l.trim().split(',');if(p.length<3)return;var a=parseFloat(p[p.length-1].replace(/[^0-9.-]/g,''));if(isNaN(a)||!/\d/.test(p[0]))return;S.bank.push({id:Date.now()+n,date:p[0].trim(),desc:p.slice(1,-1).join(',').replace(/"/g,'').trim(),amt:a,done:false});n++});save();toast(n+' transactions imported');render()};r.readAsText(e.target.files[0])});
+fetch('/api/config').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(c){if(c&&c.live){ui.live=true;render()}}).catch(function(){});
+var Q=new URLSearchParams(location.search),pid=Q.get('pid');
+if(Q.get('paid')==='1'&&pid&&S.user){ui.view='bill';var tries=0,chk=function(){api('/api/paid',{pid:pid}).then(function(r){if(r.paid&&PLANS[r.plan]){S.sub={status:'active',plan:r.plan,cycle:r.cycle,amt:Math.round(PLANS[r.plan].p*(r.cycle==='yearly'?.8:1)),next:Date.now()+(r.cycle==='yearly'?365:30)*DAY,start:S.sub.start};save();render();toast('Payment received. Thank you!')}else if(++tries<12)setTimeout(chk,2500);else toast('Your payment is not confirmed yet. It can take a few minutes.')}).catch(function(){})};chk()}
+if(location.search)try{history.replaceState(null,'',location.pathname)}catch(e){}
+render();
+</script>
+</body>
+</html>
